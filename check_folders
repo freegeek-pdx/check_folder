@@ -60,6 +60,7 @@ if [[ $mail ]]; then
         fi
 fi
 
+ROBOTPASSWORD=''
 backup_host=$HOSTNAME
 default_backup_path="/srv/tsbackup"
 default_backup_drive="/srv"
@@ -113,7 +114,7 @@ for dir in $(${path}outdated $backup_path_string $limit_string); do
         elif [[ $line =~ "Status:" ]]; then
             status=$(echo -n $line | awk '{$1=""; print $0}')
         fi
-    done < <(wget --keep-session-cookies  --save-cookies cookies.txt  --post-data 'user=tsrobot&pass=EucNabs4' -qO-  todo.freegeek.org/REST/1.0/ticket/${ticket}/show/)
+    done < <(wget --keep-session-cookies  --save-cookies cookies.txt  --post-data 'user=tsrobot&pass=ROBOTPASSWORD' -qO-  todo.freegeek.org/REST/1.0/ticket/${ticket}/show/)
     size=$(du -sh ${backup_path}/${dir} | awk '{print $1}')
 
     if [[ $status =~ "resolved" ]]; then    # push ticket on to list
@@ -180,7 +181,7 @@ if (( $(date +%-m) < 3 )); then
             elif [[ $line =~ "Status:" ]]; then
                 status=$(echo -n $line | awk '{$1=""; print $0}')
             fi
-        done < <(wget --keep-session-cookies  --save-cookies cookies.txt  --post-data 'user=tsrobot&pass=EucNabs4' -qO-  todo.freegeek.org/REST/1.0/ticket/${ticket}/show/)
+        done < <(wget --keep-session-cookies  --save-cookies cookies.txt  --post-data 'user=tsrobot&pass=ROBOTPASSWORD' -qO-  todo.freegeek.org/REST/1.0/ticket/${ticket}/show/)
         size=$(du -sh ${backup_path}/${dir} | awk '{print $1}')
         unsound_ticket_list=(${unsound_ticket_list[@]}  "$ticket")
         # store details in associative array (fake multi_dimensional)
